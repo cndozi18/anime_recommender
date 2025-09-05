@@ -1,9 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import joblib
 import numpy as np
 
 app = Flask(__name__)
+CORS(app)
 
 print("Loading model...")
 model = joblib.load('anime_knn_model.pkl')
@@ -12,7 +13,9 @@ print("Model loaded successfully.")
 
 @app.route('/')
 def home():
-    return "Hello, World!"
+    # This acts as a simple documentation page for the API.
+    return render_template('index.html')
+
 
 @app.route('/recommend')
 def recommend():
