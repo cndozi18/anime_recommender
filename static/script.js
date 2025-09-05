@@ -1,3 +1,5 @@
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
 const searchBtn = document.getElementById('search-btn');
 const animeTitleInput = document.getElementById('anime-title-input');
 const resultsContainer = document.getElementById('results-container');
@@ -12,7 +14,7 @@ async function getRecommendations() {
         return; 
     }
 
-    resultsContainer.innerHTML = '<p class="loading">Finding recommendations...</p>';
+    resultsContainer.innerHTML = '<div class="loader"></div>';
 
 
     try {
@@ -28,29 +30,60 @@ async function getRecommendations() {
     console.log("Received from API:", recommendations);
 }
 
-function displayResults(data) {
+async function displayResults(data) {
+
     resultsContainer.innerHTML = '';
 
     if (data.error) {
         resultsContainer.innerHTML = `<p class="error">${data.error}</p>`;
-    } 
-    else if (data.length === 0) {
+        return;
+    }
+    
+    if (data.length === 0) {
         resultsContainer.innerHTML = '<p>No recommendations found for this title.</p>';
-    } 
+        return;
+    }
 
-    else {
-        const listHeader = document.createElement('h2');
-        listHeader.textContent = "Here are your recommendations:";
-        resultsContainer.appendChild(listHeader);
+    const listHeader = document.createElement('h2');
+    listHeader.textContent = "Here are your recommendations:";
+    resultsContainer.appendChild(listHeader);
 
-        data.forEach(animeTitle => {
 
-            const animeElement = document.createElement('p');
-            animeElement.classList.add('recommendation-item'); // Add a class for styling
-            animeElement.textContent = animeTitle;
+    for (const animeTitle of data) {
+
+        try {
+            const jikanResponse = await fetch(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(animeTitle)}&limit=1`);
+            const jikanData = await jikanResponse.json();
             
-            resultsContainer.appendChild(animeElement);
-        });
+            let imageUrl = 'https://via.placeholder.com/225x318.png?text=No+Image';
+            if (jikanData.data && jikanData.data.length > 0) {
+                imageUrl = jikanData.data[0].images.jpg.image_url;
+            }
+            
+
+            const animeCard = document.createElement('div');
+            animeCard.classList.add('anime-card');
+            
+
+            animeCard.innerHTML = `
+                <img src="${imageUrl}" alt="${animeTitle} Poster">
+                <div class="anime-info">
+                    <h3>${animeTitle}</h3>
+                </div>
+            `;
+            
+            resultsContainer.appendChild(animeCard);
+
+            await delay(500);
+
+        } catch (error) {
+            console.error(`Failed to fetch details for ${animeTitle}:`, error);
+
+            const errorCard = document.createElement('div');
+            errorCard.classList.add('anime-card');
+            errorCard.innerHTML = `<p>${animeTitle} (Could not load image)</p>`;
+            resultsContainer.appendChild(errorCard);
+        }
     }
 }
     
