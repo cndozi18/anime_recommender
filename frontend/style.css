@@ -1,0 +1,98 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap");
+
+body {
+    height: 100vh;
+    margin: 0;
+    background: #0f0e0f;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.container p {
+    text-align: center;
+    color: #a0a0a0;
+}
+input {
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 12px 16px;
+    background: #200c94;
+    color: #eee;
+    font-size: 16px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: all 0.2s ease-in-out;
+}
+
+input:focus {
+    outline: none;
+    border-color: #4a40c2;
+    box-shadow: 0 0 10px #4a40c2;
+}
+
+button {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 16px; 
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out; 
+    background-color: #4a40c2; 
+    color: #eee;
+}
+
+
+button:hover {
+    background-color: #5a50d2;
+    transform: translateY(-2px); 
+}
+
+.header {
+    background-color: #0e0c0e;
+    border-bottom: 1px solid #222;
+    display: flex;
+    padding: 16px 24px;
+    justify-content: space-between;
+    align-items: center;
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 28px;
+    color: #eee;
+    font-weight: 800;
+}
+
+.container {
+    padding-top: 60px;
+    color: #eee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.search-box input {
+    flex-grow: 1;
+}
+
+#results-container {
+    margin-top: 40px;
+    width: 100%;
+    max-width: 500px;
+}
+
